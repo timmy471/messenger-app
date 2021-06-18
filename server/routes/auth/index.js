@@ -2,23 +2,18 @@ const router = require("express").Router();
 const { User } = require("../../db/models");
 const jwt = require("jsonwebtoken");
 
-
 const setAccessToken = (id, res) => {
-  const token = jwt.sign(
-    { id },
-    process.env.SESSION_SECRET,
-    { expiresIn: 86400 }
-  );
-  
+  const token = jwt.sign({ id }, process.env.SESSION_SECRET, {
+    expiresIn: 86400,
+  });
+
   res.cookie("accessToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 86400000,
-    sameSite: "strict"
+    sameSite: "strict",
   });
-}
-
-
+};
 
 router.post("/register", async (req, res, next) => {
   try {
@@ -39,8 +34,8 @@ router.post("/register", async (req, res, next) => {
 
     const user = await User.create(req.body);
 
-    setAccessToken(user.id, res)
-    
+    setAccessToken(user.id, res);
+
     res.json({
       ...user.dataValues,
     });
@@ -73,15 +68,13 @@ router.post("/login", async (req, res, next) => {
       console.log({ error: "Wrong username and/or password" });
       res.status(401).json({ error: "Wrong username and/or password" });
     } else {
-      
-      setAccessToken(user.id, res)
+      setAccessToken(user.id, res);
 
       res.json({
         ...user.dataValues,
       });
     }
   } catch (error) {
-    
     next(error);
   }
 });
