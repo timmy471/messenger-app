@@ -19,7 +19,7 @@ router.post("/", async (req, res, next) => {
       if (conversation) {
         //compare users' ids for correct mapping and security
         if (conversation.user1Id !== senderId) {
-          return res.sendStatus(401);
+          return res.sendStatus(403);
         }
 
         // check that conversation table with the conversationId has userId as sender
@@ -39,7 +39,7 @@ router.post("/", async (req, res, next) => {
     if (!conversation) {
      //compare ids for security
       if(req.user.id !== sender.id){
-        return res.sendStatus(401);
+        return res.sendStatus(403);
       }
 
        // create conversation
