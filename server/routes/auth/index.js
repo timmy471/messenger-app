@@ -13,7 +13,7 @@ const setAccessToken = (id, res) => {
   res.cookie("accessToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    maxAge: 86400,
+    maxAge: 86400000,
     sameSite: "strict"
   });
 }
