@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Box } from "@material-ui/core";
-import { BadgeAvatar, ChatContent } from "../Sidebar";
+import { BadgeAvatar, ChatContent, UnreadMessageBadge } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
 import { connect } from "react-redux";
@@ -13,6 +13,7 @@ const styles = {
     marginBottom: 10,
     display: "flex",
     alignItems: "center",
+    paddingRight: 17,
     "&:hover": {
       cursor: "grab",
     },
@@ -39,6 +40,7 @@ class Chat extends Component {
           sidebar={true}
         />
         <ChatContent conversation={this.props.conversation} />
+        <UnreadMessageBadge unreadMessageCount={2} />
       </Box>
     );
   }
