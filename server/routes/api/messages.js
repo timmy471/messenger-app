@@ -14,20 +14,17 @@ router.post("/", async (req, res, next) => {
     let conversation;
     // if we already know conversation id, we can save time and just add it to message and return
     if (conversationId) {
-      conversation = await Conversation.findByPk(conversationId)
+      conversation = await Conversation.findConversation(senderId, recipientId)
       //check if conversation exists
       if (conversation) {
-        //compare users' ids for correct mapping and security
-        if (conversation.user1Id !== senderId) {
-          return res.sendStatus(403);
-        }
-
         // check that conversation table with the conversationId has userId as sender
         const message = await Message.create({
           senderId,
           text,
           conversationId,
         });
+        conversation.lastMessageOn = new Date()
+       await conversation.save()
         return res.json({ message, sender });
       } else {
         return res.sendStatus(404);
@@ -46,6 +43,7 @@ router.post("/", async (req, res, next) => {
       conversation = await Conversation.create({
         user1Id: senderId,
         user2Id: recipientId,
+        lastMessageOn: new Date()
       });
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;
