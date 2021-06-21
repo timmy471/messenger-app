@@ -81,3 +81,30 @@ export const addNewConvoToStore = (state, recipientId, message) => {
     }
   });
 };
+
+export const updateConvoInStore = (state, conversation) => {
+  const convoIndex = state.findIndex(convo => convo.id === conversation.id)
+  state[convoIndex].messages = conversation.messages;
+  state[convoIndex].latestMessageText = conversation.latestMessageText
+  return state
+}
+
+
+// export const updateConvoInStore = (state, conversation) => {
+ 
+  // return state.map((convo) => {
+  //   console.log("CONVO", convo)
+  //     console.log("CONVERSATION",conversation)
+  //   if(convo.id === conversation.id){
+      
+  //     const convoCopy = { ...convo };
+  //     convoCopy.messages = conversation.messages;
+  //     convoCopy.latestMessageText = conversation.latestMessageText;
+  //     // return convoCopy
+  //   }else{
+  //     // return convo
+  //   }
+
+    
+  // })
+// }

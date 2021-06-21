@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-
 const useStyles = makeStyles(() => ({
   root: {
     borderRadius: "50%",
@@ -12,20 +11,22 @@ const useStyles = makeStyles(() => ({
     padding: 8,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+  },
+  count: {
+    fontSize: 12,
+    fontWeight: "bold",
   },
 }));
 
 const UnreadMessageBadge = ({ unreadMessageCount }) => {
   const classes = useStyles();
 
-
   return (
     <Box className={classes.root}>
-        <Typography>{unreadMessageCount}</Typography>
+      <Typography className={classes.count}>{unreadMessageCount}</Typography>
     </Box>
   );
 };
-
 
 export default UnreadMessageBadge;
