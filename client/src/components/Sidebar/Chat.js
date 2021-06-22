@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent, UnreadMessageBadge } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
@@ -31,18 +31,14 @@ const Chat = (props) => {
 
   const { photoUrl, username, online, id: senderId } = conversation.otherUser;
 
-  useEffect(() => {
-    console.log("CONVERSATION")
-  }, [conversation])
+
 
   const handleClick = async () => {
     //do not dispatch if active conversation does not change
     if (activeConversation !== username) {
       await dispatch(setActiveChat(username));
 
-      if (conversation.unreadCount > 0) {
         readMessages(user.id, conversation.id, senderId);
-      }
     }
   };
 

@@ -4,12 +4,12 @@ import {
   setNewMessage,
   removeOfflineUser,
   addOnlineUser,
-  updateConversation
+  updateConversation,
 } from "./store/conversations";
 
 const socket = io(window.location.origin);
 
-const { dispatch } = store
+const { dispatch } = store;
 
 socket.on("connect", () => {
   console.log("connected to server");
@@ -26,9 +26,9 @@ socket.on("connect", () => {
   });
 
   socket.on("message-updated", (conversation) => {
-    console.log("===========================================")
-    console.log("MESSAGE UPDATED", conversation)
-    dispatch(updateConversation(conversation))
+    if (conversation) {
+      dispatch(updateConversation(conversation));
+    }
   });
 });
 

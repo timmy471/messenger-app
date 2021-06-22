@@ -100,7 +100,7 @@ const reducer = (state = [], action) => {
         action.payload.recipientId,
         action.payload.newMessage
       );
-    case UPDATE_CONVERSATION :
+    case UPDATE_CONVERSATION:
       return updateConvoInStore(state, action.payload)
     default:
       return state;
