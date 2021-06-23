@@ -108,9 +108,12 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
 };
 
 export const readMessages = (userId, convoId, senderId) => {
-  socket.emit("read-messages", {
-    userId,
-    convoId,
-    senderId,
-  });
+  if(convoId){
+    socket.emit("read-messages", {
+      userId,
+      convoId,
+      senderId,
+    });
+  }
+ 
 };
