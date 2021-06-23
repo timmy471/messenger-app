@@ -87,7 +87,8 @@ export const updateConvoInStore = (state, conversation) => {
   if (state[convoIndex]) {
     state[convoIndex].messages = conversation.messages;
     state[convoIndex].latestMessageText = conversation.latestMessageText;
+    state[convoIndex].unreadCount = conversation.unreadCount;
   }
 
-  return state;
+  return [...state];
 };

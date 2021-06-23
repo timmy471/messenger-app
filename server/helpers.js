@@ -43,7 +43,7 @@ const updateMessagesStatus = async (data) => {
 
     convoJSON.latestMessageText = getLatestMessageText(convoJSON);
     convoJSON.lastRead = await getLatestReadMessage(convoId, userId);
-
+    convoJSON.unreadCount = await getUnreadCount(convoId, userId);
     return convoJSON;
   } catch (err) {
     console.log(err);
@@ -58,14 +58,12 @@ const getUnreadCount = async (convoId, userId) => {
         conversationId: convoId,
         recipientId: userId,
       },
-     
     });
-
     return unreadCount.count;
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 module.exports = {
   getLatestMessageText,

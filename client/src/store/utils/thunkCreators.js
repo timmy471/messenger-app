@@ -92,7 +92,6 @@ export const postMessage = (body) => async (dispatch) => {
     } else {
       dispatch(setNewMessage(data.message));
     }
-   
     sendMessage(data, body);
   } catch (error) {
     console.error(error);
@@ -112,6 +111,6 @@ export const readMessages = (userId, convoId, senderId) => {
   socket.emit("read-messages", {
     userId,
     convoId,
-    senderId
+    senderId,
   });
 };

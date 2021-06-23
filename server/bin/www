@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
 
   socket.on("read-messages", async (data) => {
     const updatedConvo = await updateMessagesStatus(data);
-    socket.broadcast.emit("message-updated", updatedConvo);
+    io.sockets.emit("message-updated", updatedConvo);
   });
 
   socket.on("logout", (id) => {
