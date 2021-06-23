@@ -43,7 +43,7 @@ const AuthLayout = (props) => {
       <Grid item xs={false} sm={5} className={classes.authImage}>
         <Hidden xsDown>
           <Box className={classes.authImageContent}>
-            <img src={bubbleImg} width="80" />
+            <img src={bubbleImg} width="80" alt="message" />
             <Box mt={7} className={classes.authImageText}>
               <Typography variant="h4" className={classes.authImageText}>
                 Converse with anyone with any language

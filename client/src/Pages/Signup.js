@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -11,58 +11,8 @@ import {
 import AuthLayout from "../components/AuthLayout";
 import Button from "../components/Button";
 import { register } from "../store/utils/thunkCreators";
-import { makeStyles } from "@material-ui/core/styles";
+import { useStyles } from "../assets/styles/auth.js"
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    margin: "3rem 2rem 5rem 0",
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: "3rem",
-    alignItems: "center",
-  },
-
-  suggestionText: {
-    color: theme.palette.secondary.main,
-    textAlign: "left",
-    fontSize: 18,
-  },
-
-  formContent: {
-    display: "flex",
-    flexDirection: "column",
-    width: "70%",
-    margin: "0 auto",
-  },
-
-  text: {
-    fontWeight: "bold",
-  },
-  endAdornment: {
-    color: theme.palette.primary.main,
-    fontWeight: "bold",
-  },
-  formControl: {
-    marginTop: "2rem",
-  },
-  label: {
-    color: theme.palette.secondary.main,
-    fontSize: 14,
-    textAlign: "left",
-    marginBottom: "0.5rem",
-  },
-  [theme.breakpoints.down("sm")]: {
-    header: {
-      margin: "3rem 0 5rem",
-      flexDirection: "column",
-      gap: "1rem",
-      alignItems: "flex-end",
-    },
-    formContent: {
-      width: "100%",
-    },
-  },
-}));
 
 const Login = (props) => {
   const history = useHistory();
