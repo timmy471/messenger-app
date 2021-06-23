@@ -60,7 +60,7 @@ const Login = (props) => {
               className={classes.formControl}
             >
               <label htmlFor="E-mail address" className={classes.label}>
-                Password
+                Email
               </label>
               <TextField aria-label="email address" name="email" type="email" />
             </FormControl>
