@@ -5,7 +5,6 @@ import { fetchUser } from "./store/utils/thunkCreators";
 import Signup from "./Pages/Signup.js";
 import Login from "./Pages/Login";
 import { Home, SnackbarError } from "./components";
-import AuthLayout from "./components/AuthLayout";
 
 const Routes = (props) => {
   const { user, fetchUser } = props;
@@ -50,7 +49,6 @@ const Routes = (props) => {
           render={(props) => (props.user?.id ? <Home /> : <Signup />)}
         />
         <Route path="/home" component={Home} />
-        <Route path="/auth" component={AuthLayout} />
       </Switch>
     </>
   );
