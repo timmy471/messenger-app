@@ -1,7 +1,10 @@
 import { Grid, Box, Hidden, Typography } from "@material-ui/core";
+import { Redirect, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import authBgImage from "../assets/images/bg-img.png";
 import bubbleImg from "../assets/images/bubble.svg";
+import Button from "../components/Button";
 
 const useStyles = makeStyles((theme) => ({
   [theme.breakpoints.up("sm")]: {
@@ -33,10 +36,30 @@ const useStyles = makeStyles((theme) => ({
   authImageContent: {
     width: "70%",
   },
+  header: {
+    margin: "3rem 2rem 5rem 0",
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "3rem",
+    alignItems: "center",
+  },
+
+  suggestionText: {
+    color: theme.palette.secondary.main,
+    fontSize: 18,
+  },
 }));
 
 const AuthLayout = (props) => {
   const classes = useStyles();
+
+  const { suggestionText, alternativeRoute, routeActionText, user } = props
+  const history = useHistory();
+
+  if (user.id) {
+    return <Redirect to="/home" />;
+  }
+
 
   return (
     <Grid container className={classes.root}>
@@ -54,10 +77,27 @@ const AuthLayout = (props) => {
       </Grid>
 
       <Grid item xs={12} sm={7}>
+      <Box className={classes.header}>
+          <Typography className={classes.suggestionText}>
+            {suggestionText}
+          </Typography>
+          <Button
+            colorVariant="secondary"
+            onClick={() => history.push(`/${alternativeRoute}`)}
+          >
+            {routeActionText}
+          </Button>
+        </Box>
         {props.children}
       </Grid>
     </Grid>
   );
 };
 
-export default AuthLayout;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(AuthLayout);

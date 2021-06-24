@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Box,
@@ -11,15 +10,11 @@ import {
 import AuthLayout from "../components/AuthLayout";
 import Button from "../components/Button";
 import { login } from "./../store/utils/thunkCreators";
-import { useStyles } from "../assets/styles/auth.js"
-
-
-
+import { useStyles } from "../assets/styles/auth.js";
 
 const Login = (props) => {
-  const history = useHistory();
   const classes = useStyles();
-  const { user, login } = props;
+  const { login } = props;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,25 +24,13 @@ const Login = (props) => {
     await login({ email, password });
   };
 
-  if (user.id) {
-    return <Redirect to="/home" />;
-  }
-
   return (
-    <AuthLayout>
+    <AuthLayout
+      suggestionText="Don't have an account?"
+      routeActionText="Create account"
+      alternativeRoute={"register"}
+    >
       <Container>
-        <Box className={classes.header}>
-          <Typography className={classes.suggestionText}>
-            Don't have an account?
-          </Typography>
-          <Button
-            colorVariant="secondary"
-            onClick={() => history.push("/register")}
-          >
-            Create account
-          </Button>
-        </Box>
-
         <form onSubmit={handleLogin}>
           <Box align="center" className={classes.formContent}>
             <Typography variant="h5" className={classes.text} align="left">
@@ -97,12 +80,6 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (credentials) => {
@@ -111,4 +88,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapDispatchToProps)(Login);
