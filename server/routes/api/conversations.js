@@ -20,7 +20,6 @@ router.get("/", async (req, res, next) => {
         },
       },
       attributes: ["id", "lastMessageOn"],
-      // order:[["lastMessageOn","DESC"], ["createdAt"]],
       include: [
         { model: Message, order: [[Message, "createdAt", "ASC"]] },
         {
