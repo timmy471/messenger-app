@@ -47,12 +47,10 @@ router.get("/", async (req, res, next) => {
       ],
     });
 
-    const newConversations = conversations.sort(
-      (a, b) => b.lastMessageOn - a.lastMessageOn
-    );
+   
 
-    for (let i = 0; i < newConversations.length; i++) {
-      const convo = newConversations[i];
+    for (let i = 0; i < conversations.length; i++) {
+      const convo = conversations[i];
       const convoJSON = convo.toJSON();
 
       // set a property "otherUser" so that frontend will have easier access
@@ -74,10 +72,10 @@ router.get("/", async (req, res, next) => {
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText =
         convoJSON.messages[convoJSON.messages.length - 1].text;
-      newConversations[i] = convoJSON;
+      conversations[i] = convoJSON;
     }
 
-    res.json(newConversations);
+    res.json(conversations);
   } catch (error) {
     next(error);
   }

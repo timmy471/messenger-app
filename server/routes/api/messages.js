@@ -13,6 +13,7 @@ router.post("/", async (req, res, next) => {
 
     let conversation;
     conversation = await Conversation.findConversation(senderId, recipientId);
+    const newDate = new Date();
     // if we already know conversation id, we can save time and just add it to message and return
     if (conversationId) {
       //check if conversation exists Ids match
@@ -23,9 +24,11 @@ router.post("/", async (req, res, next) => {
           text,
           conversationId,
         });
-        conversation.lastMessageOn = new Date();
+        
+        
+        conversation.lastMessageOn = newDate;
         await conversation.save();
-        return res.json({ message, sender });
+        return res.json({ lastMessageOn: newDate, message, sender });
       } else {
         return res.sendStatus(404);
       }
@@ -41,7 +44,7 @@ router.post("/", async (req, res, next) => {
       conversation = await Conversation.create({
         user1Id: senderId,
         user2Id: recipientId,
-        lastMessageOn: new Date(),
+        lastMessageOn: newDate,
       });
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;
@@ -52,7 +55,7 @@ router.post("/", async (req, res, next) => {
       text,
       conversationId: conversation.id,
     });
-    res.json({ message, sender });
+    res.json({ lastMessageOn: newDate, message, sender });
   } catch (error) {
     next(error);
   }
