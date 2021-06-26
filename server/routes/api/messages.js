@@ -11,22 +11,40 @@ router.post("/", async (req, res, next) => {
     const senderId = req.user.id;
     const { recipientId, text, conversationId, sender } = req.body;
 
+    let conversation;
+    conversation = await Conversation.findConversation(senderId, recipientId);
+    const newDate = new Date();
     // if we already know conversation id, we can save time and just add it to message and return
     if (conversationId) {
-      const message = await Message.create({ senderId, text, conversationId });
-      return res.json({ message, sender });
+      //check if conversation exists Ids match
+      if (conversation && conversation.id === conversationId) {
+        // check that conversation table with the conversationId has userId as sender
+        const message = await Message.create({
+          senderId,
+          text,
+          conversationId,
+        });
+        
+        
+        conversation.lastMessageOn = newDate;
+        await conversation.save();
+        return res.json({ lastMessageOn: newDate, message, sender });
+      } else {
+        return res.sendStatus(404);
+      }
     }
     // if we don't have conversation id, find a conversation to make sure it doesn't already exist
-    let conversation = await Conversation.findConversation(
-      senderId,
-      recipientId
-    );
-
     if (!conversation) {
+      //compare ids for security
+      if (req.user.id !== sender.id) {
+        return res.sendStatus(403);
+      }
+
       // create conversation
       conversation = await Conversation.create({
         user1Id: senderId,
         user2Id: recipientId,
+        lastMessageOn: newDate,
       });
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;
@@ -37,7 +55,7 @@ router.post("/", async (req, res, next) => {
       text,
       conversationId: conversation.id,
     });
-    res.json({ message, sender });
+    res.json({ lastMessageOn: newDate, message, sender });
   } catch (error) {
     next(error);
   }

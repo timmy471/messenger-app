@@ -19,10 +19,9 @@ router.get("/", async (req, res, next) => {
           user2Id: userId,
         },
       },
-      attributes: ["id"],
-      order: [[Message, "createdAt", "DESC"]],
+      attributes: ["id", "lastMessageOn"],
       include: [
-        { model: Message, order: ["createdAt", "DESC"] },
+        { model: Message, order: [[Message, "createdAt", "ASC"]] },
         {
           model: User,
           as: "user1",
@@ -48,6 +47,8 @@ router.get("/", async (req, res, next) => {
       ],
     });
 
+   
+
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
@@ -69,7 +70,8 @@ router.get("/", async (req, res, next) => {
       }
 
       // set properties for notification count and latest message preview
-      convoJSON.latestMessageText = convoJSON.messages[0].text;
+      convoJSON.latestMessageText =
+        convoJSON.messages[convoJSON.messages.length - 1].text;
       conversations[i] = convoJSON;
     }
 
