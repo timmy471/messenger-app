@@ -25,9 +25,9 @@ socket.on("connect", () => {
     dispatch(setNewMessage(data.message, data.sender));
   });
 
-  socket.on("message-updated", (conversation) => {
-    if (conversation) {
-      dispatch(updateConversation(conversation));
+  socket.on("message-updated", (data) => {
+    if (data) {
+      dispatch(updateConversation(data));
     }
   });
 });

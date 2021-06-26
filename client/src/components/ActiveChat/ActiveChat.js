@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
@@ -22,12 +22,16 @@ const useStyles = makeStyles(() => ({
 
 const ActiveChat = (props) => {
   const classes = useStyles();
-  const { user } = props;
-  const conversation = props.conversation || {};
+  const { user, conversations } = props;
+  const [conversation, setConversation] = useState(props.conversation || {})
+  
+  useEffect(() => {
+  setConversation(props.conversation);
+  }, [props.conversation, conversations])
 
   return (
     <Box className={classes.root}>
-      {conversation.otherUser && (
+      {conversation?.otherUser && (
         <>
           <Header
             username={conversation.otherUser.username}
@@ -55,6 +59,7 @@ const ActiveChat = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    conversations: state.conversations,
     conversation:
       state.conversations &&
       state.conversations.find(
