@@ -23,16 +23,13 @@ socket.on("connect", () => {
   });
 
   socket.on("new-message", (data) => {
-     dispatch(setNewMessage(data.message, data.sender));
+     dispatch(setNewMessage(data.message, data.sender, data.lastMessageOn));
   });
 
   socket.on("message-updated", (data) => {
     if (data) {
       dispatch(updateConversation(data));
     }
-    store.dispatch(
-      setNewMessage(data.message, data.sender, data.lastMessageOn)
-    );
   });
 });
 

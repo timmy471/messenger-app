@@ -30,15 +30,20 @@ const ActiveChat = (props) => {
     setConversation(props.conversation);
   }, [props.conversation, conversations]);
 
+
+  const checkRecipient = () => conversation.messages[conversation.messages.length - 1].recipientId === user.id
+
+  const checkActiveConvo = () => activeConversation !== "" &&
+  activeConversation === conversation?.otherUser.username
+
   useEffect(() => {
     if (
-      activeConversation &&
-      activeConversation === conversation?.otherUser.username
+      checkActiveConvo() && checkRecipient()
     ) {
       readMessages(user.id, conversation?.id, conversation?.otherUser.id);
     }
     //eslint-disable-next-line
-  }, [props.conversation, user, activeConversation]);
+  }, [props.conversation]);
 
   return (
     <Box className={classes.root}>

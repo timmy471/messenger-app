@@ -12,7 +12,7 @@ const Messages = (props) => {
   const scrollRef = useRef();
 
   useEffect(() => {
-    scrollRef?.current.scrollIntoView({ behavior: "smooth" });
+    scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
@@ -20,21 +20,23 @@ const Messages = (props) => {
       {messages.map((message, index) => {
         const time = moment(message.createdAt).format("h:mm");
 
-        return message.senderId === userId ? (
-          <SenderBubble
-            key={index}
-            text={message.text}
-            time={time}
-            otherUser={otherUser}
-            showRead={checkIfLastRead(message.id)}
-          />
-        ) : (
-          <OtherUserBubble
-            key={index}
-            text={message.text}
-            time={time}
-            otherUser={otherUser}
-          />
+        return (
+          <Box ref={scrollRef} key={index}>
+            {message.senderId === userId ? (
+              <SenderBubble
+                text={message.text}
+                time={time}
+                otherUser={otherUser}
+                showRead={checkIfLastRead(message.id)}
+              />
+            ) : (
+              <OtherUserBubble
+                text={message.text}
+                time={time}
+                otherUser={otherUser}
+              />
+            )}
+          </Box>
         );
       })}
     </Box>

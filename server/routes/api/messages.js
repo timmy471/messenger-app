@@ -23,6 +23,7 @@ router.post("/", async (req, res, next) => {
           senderId,
           text,
           conversationId,
+          recipientId
         });
         
         conversation.lastMessageOn = newDate;

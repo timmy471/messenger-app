@@ -83,7 +83,6 @@ const Login = (props) => {
             <Grid
               item
               xs={12}
-              mt-4
               align="center"
               className={classes.ctaButton}
             >
@@ -106,5 +105,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-// export default connect(mapDispatchToProps)(Login);
 export default connect(null, mapDispatchToProps)(Login)
+
