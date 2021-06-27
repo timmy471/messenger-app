@@ -39,8 +39,6 @@ class Input extends Component {
       recipientId: this.props.otherUser.id,
       conversationId: this.props.conversationId,
       sender: this.props.conversationId ? null : this.props.user,
-      activeConversation: this.props.user.username,
-      recipientUserName: this.props.user.username
     };
     await this.props.postMessage(reqBody);
     this.setState({
