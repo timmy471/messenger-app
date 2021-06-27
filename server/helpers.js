@@ -14,7 +14,6 @@ const getLatestReadMessage = async (convoId, userId) => {
       limit: 1,
       order: [["createdAt", "DESC"]],
     });
-    console.log("LATEST UNREAD", latestReadMessage[0]);
     return latestReadMessage[0];
   } catch (err) {
     throw err;
@@ -38,15 +37,17 @@ const updateMessagesStatus = async (data) => {
       where: {
         id: convoId,
       },
-      attributes: ["id", "user2Id"],
+      attributes: ["id", "user2Id", "user1Id"],
       order: [[Message, "createdAt", "ASC"]],
       include: [{ model: Message, order: ["createdAt", "ASC"] }],
     });
 
     const convoJSON = newConvo.toJSON();
 
+    const lastReadOne = await getLatestReadMessage(convoId, newConvo.user2Id);
+    const lastReadTwo = await getLatestReadMessage(convoId, newConvo.user1Id);
     convoJSON.latestMessageText = getLatestMessageText(convoJSON);
-    convoJSON.lastRead = await getLatestReadMessage(convoId, newConvo.user2Id);
+    convoJSON.lastReadMessages = [lastReadOne, lastReadTwo];
     convoJSON.unreadCount = await getUnreadCount(convoId, userId);
 
     return convoJSON;

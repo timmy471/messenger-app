@@ -21,8 +21,13 @@ socket.on("connect", () => {
   socket.on("remove-offline-user", (id) => {
     dispatch(removeOfflineUser(id));
   });
+
   socket.on("new-message", (data) => {
-    dispatch(setNewMessage(data.message, data.sender));
+     dispatch(setNewMessage(data.message, data.sender));
+    // if (data.activeConversation === data.recipientUserName) {
+    //   const { recipientId, conversationId, senderId } = data.message;
+    //   readMessages(recipientId, conversationId, senderId);
+    // }
   });
 
   socket.on("message-updated", (data) => {

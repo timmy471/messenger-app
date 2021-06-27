@@ -42,9 +42,12 @@ io.on("connection", (socket) => {
   });
 
   socket.on("new-message", (data) => {
+    const { message, sender, activeConversation, recipientUserName } = data;
     socket.broadcast.emit("new-message", {
-      message: data.message,
-      sender: data.sender,
+      message: message,
+      sender: sender,
+      activeConversation: activeConversation,
+      recipientUserName: recipientUserName
     });
   });
 
