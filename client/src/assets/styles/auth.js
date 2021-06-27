@@ -2,12 +2,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   formContent: {
-    display: "flex",
-    flexDirection: "column",
     width: "70%",
-    margin: "0 auto",
+    margin: theme.spacing(0, "auto"),
   },
-
   text: {
     fontWeight: "bold",
   },
@@ -16,23 +13,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   formControl: {
-    marginTop: "2rem",
+    width: "100%",
   },
   label: {
     color: theme.palette.secondary.main,
     fontSize: 14,
     textAlign: "left",
-    marginBottom: "0.5rem",
+    marginBottom: theme.spacing(2),
+  },
+  ctaButton: {
+    marginTop: theme.spacing(4)
   },
   [theme.breakpoints.down("sm")]: {
-    header: {
-      margin: "3rem 0 5rem",
-      flexDirection: "column",
-      gap: "1rem",
-      alignItems: "flex-end",
-    },
     formContent: {
-      width: "100%",
+      width: "90%",
     },
   },
 }));

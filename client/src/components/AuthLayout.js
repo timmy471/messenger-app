@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     width: "70%",
   },
   header: {
-    margin: "3rem 2rem 5rem 0",
+    margin: theme.spacing(6, 4, 10, 0),
     display: "flex",
     justifyContent: "flex-end",
     gap: "3rem",
@@ -48,18 +48,29 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main,
     fontSize: 18,
   },
+
+  [theme.breakpoints.down("sm")]: {
+    header: {
+      margin: theme.spacing(5, 2, 10, 0),
+      flexDirection: "column",
+      gap: "1rem",
+      alignItems: "flex-end",
+    },
+    formContent: {
+      width: "100%",
+    },
+  },
 }));
 
 const AuthLayout = (props) => {
   const classes = useStyles();
 
-  const { suggestionText, alternativeRoute, routeActionText, user } = props
+  const { suggestionText, alternativeRoute, routeActionText, user } = props;
   const history = useHistory();
 
   if (user.id) {
     return <Redirect to="/home" />;
   }
-
 
   return (
     <Grid container className={classes.root}>
@@ -77,7 +88,7 @@ const AuthLayout = (props) => {
       </Grid>
 
       <Grid item xs={12} sm={7}>
-      <Box className={classes.header}>
+        <Box className={classes.header}>
           <Typography className={classes.suggestionText}>
             {suggestionText}
           </Typography>

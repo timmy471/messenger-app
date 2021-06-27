@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  Box,
   Typography,
   FormControl,
   TextField,
   Container,
+  Grid,
 } from "@material-ui/core";
 import AuthLayout from "../components/AuthLayout";
 import Button from "../components/Button";
@@ -32,48 +32,66 @@ const Login = (props) => {
     >
       <Container>
         <form onSubmit={handleLogin}>
-          <Box align="center" className={classes.formContent}>
-            <Typography variant="h5" className={classes.text} align="left">
-              Welcome Back!
-            </Typography>
+          <Grid container spacing={2} className={classes.formContent}>
+            <Grid item xs={12}>
+              <Typography variant="h5" className={classes.text} align="left">
+                Welcome Back!
+              </Typography>
+            </Grid>
 
-            <FormControl
-              margin="normal"
-              required
-              className={classes.formControl}
+            <Grid item xs={12}>
+              <FormControl
+                margin="normal"
+                required
+                className={classes.formControl}
+              >
+                <label htmlFor="E-mail address" className={classes.label}>
+                  Email
+                </label>
+                <TextField
+                  aria-label="email address"
+                  name="email"
+                  type="email"
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl
+                margin="normal"
+                required
+                className={classes.formControl}
+              >
+                <label htmlFor="password" className={classes.label}>
+                  Password
+                </label>
+                <TextField
+                  aria-label="password"
+                  type="password"
+                  name="password"
+                  InputProps={{
+                    endAdornment: (
+                      <Typography className={classes.endAdornment}>
+                        Forgot?
+                      </Typography>
+                    ),
+                  }}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              mt-4
+              align="center"
+              className={classes.ctaButton}
             >
-              <label htmlFor="E-mail address" className={classes.label}>
-                Email
-              </label>
-              <TextField aria-label="email address" name="email" type="email" />
-            </FormControl>
-            <FormControl
-              margin="normal"
-              required
-              className={classes.formControl}
-            >
-              <label htmlFor="password" className={classes.label}>
-                Password
-              </label>
-              <TextField
-                aria-label="password"
-                type="password"
-                name="password"
-                InputProps={{
-                  endAdornment: (
-                    <Typography className={classes.endAdornment}>
-                      Forgot?
-                    </Typography>
-                  ),
-                }}
-              />
-            </FormControl>
-            <Box marginTop={7}>
               <Button type="submit" colorVariant="primary">
                 Login
               </Button>
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
         </form>
       </Container>
     </AuthLayout>
@@ -88,4 +106,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapDispatchToProps)(Login);
+// export default connect(mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login)

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  Box,
+  Grid,
   Typography,
   FormControl,
   TextField,
@@ -33,44 +33,61 @@ const Login = (props) => {
     >
       <Container>
         <form onSubmit={handleRegister}>
-          <Box align="center" className={classes.formContent}>
-            <Typography variant="h5" className={classes.text} align="left">
-              Create an account.
-            </Typography>
+          <Grid container spacing={2} className={classes.formContent}>
+            <Grid item xs={12}>
+              <Typography variant="h5" className={classes.text} align="left">
+                Create an account.
+              </Typography>
+            </Grid>
 
-            <FormControl className={classes.formControl}>
-              <label htmlFor="username" className={classes.label}>
-                Username
-              </label>
-              <TextField aria-label="username" name="username" type="text" />
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <label htmlFor="email" className={classes.label}>
-                E-mail address
-              </label>
-              <TextField
-                aria-label="e-mail address"
-                type="email"
-                name="email"
-              />
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <label htmlFor="password" className={classes.label}>
-                Password
-              </label>
-              <TextField
-                aria-label="password"
-                type="password"
-                inputProps={{ minLength: 6 }}
-                name="password"
-              />
-            </FormControl>
-            <Box marginTop={5}>
+            <Grid item xs={12}>
+              <FormControl className={classes.formControl}>
+                <label htmlFor="username" className={classes.label}>
+                  Username
+                </label>
+                <TextField aria-label="username" name="username" type="text" />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl className={classes.formControl}>
+                <label htmlFor="email" className={classes.label}>
+                  E-mail address
+                </label>
+                <TextField
+                  aria-label="e-mail address"
+                  type="email"
+                  name="email"
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl className={classes.formControl}>
+                <label htmlFor="password" className={classes.label}>
+                  Password
+                </label>
+                <TextField
+                  aria-label="password"
+                  type="password"
+                  inputProps={{ minLength: 6 }}
+                  name="password"
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              mt-4
+              align="center"
+              className={classes.ctaButton}
+            >
               <Button type="submit" colorVariant="primary">
                 Create
               </Button>
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
         </form>
       </Container>
     </AuthLayout>
@@ -85,4 +102,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login)
