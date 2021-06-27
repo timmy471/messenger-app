@@ -26,7 +26,9 @@ const Sidebar = (props) => {
   const [newConversations, setNewConversations] = useState(props.conversations || []);
 
   useEffect(() => {
-    setNewConversations(props.conversations);
+    setNewConversations(props.conversations.sort(
+      (a, b) => new Date(b.lastMessageOn) - new Date(a.lastMessageOn)
+    ));
   }, [props.conversations]);
 
   return (

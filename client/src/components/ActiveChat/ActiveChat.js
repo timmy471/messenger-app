@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     flexGrow: 1,
     justifyContent: "space-between",
-  },
+  }
 }));
 
 const ActiveChat = (props) => {

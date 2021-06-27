@@ -30,6 +30,9 @@ socket.on("connect", () => {
     if (data) {
       dispatch(updateConversation(data));
     }
+    store.dispatch(
+      setNewMessage(data.message, data.sender, data.lastMessageOn)
+    );
   });
 });
 

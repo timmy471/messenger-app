@@ -42,10 +42,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("new-message", (data) => {
-    const { message, sender } = data;
     socket.broadcast.emit("new-message", {
-      message: message,
-      sender: sender,
+      message: data.message,
+      sender: data.sender,
+      lastMessageOn: data.lastMessageOn
     });
   });
 

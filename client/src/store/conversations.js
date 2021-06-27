@@ -27,10 +27,10 @@ export const gotConversations = (conversations) => {
   };
 };
 
-export const setNewMessage = (message, sender) => {
+export const setNewMessage = (message, sender, lastMessageOn) => {
   return {
     type: SET_MESSAGE,
-    payload: { message, sender: sender || null },
+    payload: { message, sender: sender || null, lastMessageOn },
   };
 };
 
@@ -62,10 +62,10 @@ export const clearSearchedUsers = () => {
 };
 
 // add new conversation when sending a new message
-export const addConversation = (recipientId, newMessage) => {
+export const addConversation = (recipientId, newMessage, lastMessageOn) => {
   return {
     type: ADD_CONVERSATION,
-    payload: { recipientId, newMessage },
+    payload: { recipientId, newMessage, lastMessageOn },
   };
 };
 
@@ -108,3 +108,37 @@ const reducer = (state = [], action) => {
 };
 
 export default reducer;
+
+// const reducer = (state = [], action) => {
+//   switch (action.type) {
+//     case GET_CONVERSATIONS:
+//       return action.conversations;
+//     case SET_MESSAGE:
+//       return addMessageToStore(state, action.payload);
+//     case ADD_ONLINE_USER: {
+//       return addOnlineUserToStore(state, action.id);
+//     }
+//     case REMOVE_OFFLINE_USER: {
+//       return removeOfflineUserFromStore(state, action.id);
+//     }
+//     case SET_SEARCHED_USERS:
+//       return addSearchedUsersToStore(state, action.users);
+//     case CLEAR_SEARCHED_USERS:
+//       return state.filter((convo) => convo.id);
+//     case ADD_CONVERSATION:
+// <<<<<<< HEAD
+//       return addNewConvoToStore(
+//         state,
+//         action.payload.recipientId,
+//         action.payload.newMessage
+//       );
+//     case UPDATE_CONVERSATION:
+//       return updateConvoInStore(state, action.payload)
+// =======
+//       const { recipientId, newMessage, lastMessageOn } = action.payload;
+//       return addNewConvoToStore(state, recipientId, newMessage, lastMessageOn);
+// >>>>>>> main
+//     default:
+//       return state;
+//   }
+// };

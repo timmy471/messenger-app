@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Box } from "@material-ui/core";
 import { SenderBubble, OtherUserBubble } from "../ActiveChat";
 import moment from "moment";
@@ -8,6 +8,12 @@ const Messages = (props) => {
 
   const checkIfLastRead = (messageId) =>
     lastReadMessages?.filter((message) => message?.id === messageId).length > 0;
+
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    scrollRef?.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <Box>

@@ -21,10 +21,9 @@ router.get("/", async (req, res, next) => {
           user2Id: userId,
         },
       },
-      attributes: ["id"],
-      order: [[Message, "createdAt", "ASC"]],
+      attributes: ["id", "lastMessageOn"],
       include: [
-        { model: Message, order: ["createdAt", "ASC"] },
+        { model: Message, order: [[Message, "createdAt", "ASC"]] },
         {
           model: User,
           as: "user1",
@@ -49,6 +48,8 @@ router.get("/", async (req, res, next) => {
         },
       ],
     });
+
+   
 
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
