@@ -8,7 +8,6 @@ import {
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
-
 // USER THUNK CREATORS
 
 export const fetchUser = () => async (dispatch) => {
@@ -96,7 +95,6 @@ export const postMessage = (body) => async (dispatch) => {
     } else {
       dispatch(setNewMessage(data.message, null, data.lastMessageOn));
     }
-
     sendMessage(data, body);
   } catch (error) {
     console.error(error);
@@ -109,5 +107,15 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     dispatch(setSearchedUsers(data));
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const readMessages = (userId, convoId, senderId) => {
+  if (convoId) {
+    socket.emit("read-messages", {
+      userId,
+      convoId,
+      senderId,
+    });
   }
 };

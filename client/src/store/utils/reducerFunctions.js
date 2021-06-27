@@ -88,3 +88,15 @@ export const addNewConvoToStore = (
     }
   });
 };
+
+export const updateConvoInStore = (state, conversation) => {
+  const convoIndex = state.findIndex((convo) => convo.id === conversation?.id);
+  if (state[convoIndex]) {
+    state[convoIndex].messages = conversation.messages;
+    state[convoIndex].latestMessageText = conversation.latestMessageText;
+    state[convoIndex].unreadCount = conversation.unreadCount;
+    state[convoIndex].lastReadMessages = conversation.lastReadMessages;
+  }
+
+  return [...state];
+};

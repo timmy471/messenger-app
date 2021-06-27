@@ -4,7 +4,10 @@ import { SenderBubble, OtherUserBubble } from "../ActiveChat";
 import moment from "moment";
 
 const Messages = (props) => {
-  const { messages, otherUser, userId } = props;
+  const { messages, otherUser, userId, lastReadMessages } = props;
+
+  const checkIfLastRead = (messageId) =>
+    lastReadMessages?.filter((message) => message?.id === messageId).length > 0;
 
   const scrollRef = useRef();
 
@@ -14,21 +17,24 @@ const Messages = (props) => {
 
   return (
     <Box>
-      {messages.map((message) => {
+      {messages.map((message, index) => {
         const time = moment(message.createdAt).format("h:mm");
 
-        return (
-          <Box key={message.id} ref={scrollRef}>
-            {message.senderId === userId ? (
-              <SenderBubble text={message.text} time={time} />
-            ) : (
-              <OtherUserBubble
-                text={message.text}
-                time={time}
-                otherUser={otherUser}
-              />
-            )}
-          </Box>
+        return message.senderId === userId ? (
+          <SenderBubble
+            key={index}
+            text={message.text}
+            time={time}
+            otherUser={otherUser}
+            showRead={checkIfLastRead(message.id)}
+          />
+        ) : (
+          <OtherUserBubble
+            key={index}
+            text={message.text}
+            time={time}
+            otherUser={otherUser}
+          />
         );
       })}
     </Box>

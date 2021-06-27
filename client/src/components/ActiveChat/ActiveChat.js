@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
 import { connect } from "react-redux";
+import { readMessages } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     flexGrow: 8,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   chatContainer: {
     marginLeft: 41,
@@ -22,12 +23,26 @@ const useStyles = makeStyles(() => ({
 
 const ActiveChat = (props) => {
   const classes = useStyles();
-  const { user } = props;
-  const conversation = props.conversation || {};
+  const { user, conversations, activeConversation } = props;
+  const [conversation, setConversation] = useState(props.conversation || {});
+
+  useEffect(() => {
+    setConversation(props.conversation);
+  }, [props.conversation, conversations]);
+
+  useEffect(() => {
+    if (
+      activeConversation &&
+      activeConversation === conversation?.otherUser.username
+    ) {
+      readMessages(user.id, conversation?.id, conversation?.otherUser.id);
+    }
+    //eslint-disable-next-line
+  }, [props.conversation, user, activeConversation]);
 
   return (
     <Box className={classes.root}>
-      {conversation.otherUser && (
+      {conversation?.otherUser && (
         <>
           <Header
             username={conversation.otherUser.username}
@@ -38,6 +53,7 @@ const ActiveChat = (props) => {
               messages={conversation.messages}
               otherUser={conversation.otherUser}
               userId={user.id}
+              lastReadMessages={conversation.lastReadMessages}
             />
             <Input
               otherUser={conversation.otherUser}
@@ -54,11 +70,14 @@ const ActiveChat = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    conversations: state.conversations,
+    activeConversation: state.activeConversation,
     conversation:
       state.conversations &&
       state.conversations.find(
-        (conversation) => conversation.otherUser.username === state.activeConversation
-      )
+        (conversation) =>
+          conversation.otherUser.username === state.activeConversation
+      ),
   };
 };
 

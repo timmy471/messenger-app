@@ -25,7 +25,6 @@ router.post("/", async (req, res, next) => {
           conversationId,
         });
         
-        
         conversation.lastMessageOn = newDate;
         await conversation.save();
         return res.json({ lastMessageOn: newDate, message, sender });
@@ -53,6 +52,7 @@ router.post("/", async (req, res, next) => {
     const message = await Message.create({
       senderId,
       text,
+      recipientId,
       conversationId: conversation.id,
     });
     res.json({ lastMessageOn: newDate, message, sender });

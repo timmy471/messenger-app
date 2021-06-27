@@ -1,9 +1,10 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { BadgeAvatar, ChatContent } from "../Sidebar";
+import { BadgeAvatar, ChatContent, UnreadMessageBadge } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
-import { connect } from "react-redux";
+import { readMessages } from "../../store/utils/thunkCreators";
+import { useSelector, useDispatch } from "react-redux";
 
 const styles = {
   root: {
@@ -13,6 +14,7 @@ const styles = {
     marginBottom: 10,
     display: "flex",
     alignItems: "center",
+    paddingRight: 17,
     "&:hover": {
       cursor: "grab",
     },
@@ -20,35 +22,37 @@ const styles = {
 };
 
 const Chat = (props) => {
-  const { setActiveChat, conversation, classes } = props;
+  const { classes, conversation } = props;
 
-  const {
-    otherUser: { photoUrl, username, online },
-  } = conversation;
+  const { user, activeConversation } = useSelector((state) => state);
 
-  const handleClick = async (conversation) => {
-    await setActiveChat(username);
+  const dispatch = useDispatch();
+
+  const { photoUrl, username, online, id: senderId } = conversation.otherUser;
+
+  const handleClick = async () => {
+    //do not dispatch if active conversation does not change
+    if (activeConversation !== username) {
+      await dispatch(setActiveChat(username));
+
+      readMessages(user.id, conversation.id, senderId);
+    }
   };
 
   return (
-    <Box onClick={() => handleClick(conversation)} className={classes.root}>
+    <Box onClick={() => handleClick()} className={classes.root}>
       <BadgeAvatar
         photoUrl={photoUrl}
         username={username}
         online={online}
         sidebar={true}
       />
-      <ChatContent conversation={conversation} />
+      <ChatContent conversation={props.conversation} />
+      {conversation.unreadCount > 0 && (
+        <UnreadMessageBadge unreadMessageCount={conversation.unreadCount} />
+      )}
     </Box>
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setActiveChat: (id) => {
-      dispatch(setActiveChat(id));
-    },
-  };
-};
-
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Chat));
+export default withStyles(styles)(Chat);
