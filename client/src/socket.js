@@ -12,7 +12,6 @@ const socket = io(window.location.origin);
 const { dispatch } = store;
 
 socket.on("connect", () => {
-  // socket.emit("authentication", {username: "santiago", password: "password"});
   console.log("connected to server");
 
   socket.on("add-online-user", (id) => {
