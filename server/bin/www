@@ -9,6 +9,7 @@ require("dotenv").config();
 
 const { app, sessionStore } = require("../app");
 const http = require("http");
+const jwt = require("jsonwebtoken");
 const db = require("../db");
 const onlineUsers = require("../onlineUsers");
 const { updateMessagesStatus } = require("../helpers");
@@ -30,9 +31,31 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces, and sync database.
  */
 
-const io = require("socket.io")(server);
+ const io = require("socket.io")(server, {
+  autoConnect: false,
+  cors: {
+    origin: "*",
+  },
+});
+
+//Socket authentication
+io.use((socket, next) => {
+  const accessToken = socket.handshake.headers.cookie.split('accessToken=')[1]
+  if (accessToken.length) {
+    jwt.verify(accessToken, process.env.SESSION_SECRET, (err, decoded) => {
+      if (err) {
+        return next(new Error("Unable to autheticate user"))
+      }
+      socket.user = decoded
+      return next()
+    })
+  } else {
+    return next(new Error("Unable to autheticate user"))
+  }
+})
 
 io.on("connection", (socket) => {
+  socket.join(socket.user.id)
   socket.on("go-online", (id) => {
     if (!onlineUsers.includes(id)) {
       onlineUsers.push(id);
@@ -42,10 +65,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("new-message", (data) => {
-    socket.broadcast.emit("new-message", {
-      message: data.message,
-      sender: data.sender,
-      lastMessageOn: data.lastMessageOn
+    const { message, sender, lastMessageOn, recipientId } = data;
+    socket.to(onlineUsers[recipientId]).emit("new-message", {
+      message: message,
+      sender: sender,
+      lastMessageOn: lastMessageOn,
     });
   });
 
@@ -59,9 +83,17 @@ io.on("connection", (socket) => {
       userIndex = onlineUsers.indexOf(id);
       onlineUsers.splice(userIndex, 1);
       socket.broadcast.emit("remove-offline-user", id);
+      socket.disconnect();
     }
   });
+
+  socket.on("*", (e, data) => {
+    console.log(e);
+    console.log(data);
 });
+
+});
+
 
 sessionStore
   .sync()
