@@ -23,7 +23,7 @@ socket.on("connect", () => {
   });
 
   socket.on("new-message", (data) => {
-     dispatch(setNewMessage(data.message, data.sender, data.lastMessageOn));
+     dispatch(setNewMessage(data.message, data.sender, data.lastMessageOn, data.unreadCount));
   });
 
   socket.on("message-updated", (data) => {

@@ -45,7 +45,8 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("new-message", {
       message: data.message,
       sender: data.sender,
-      lastMessageOn: data.lastMessageOn
+      lastMessageOn: data.lastMessageOn,
+      unreadCount: data.unreadCount
     });
   });
 

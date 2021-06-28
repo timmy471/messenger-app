@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     flexGrow: 1,
     justifyContent: "space-between",
-  }
+  },
 }));
 
 const ActiveChat = (props) => {
@@ -30,16 +30,16 @@ const ActiveChat = (props) => {
     setConversation(props.conversation);
   }, [props.conversation, conversations]);
 
+  const checkRecipient = () =>
+    conversation.messages[conversation.messages.length - 1]?.recipientId ===
+    user.id;
 
-  const checkRecipient = () => conversation.messages[conversation.messages.length - 1].recipientId === user.id
-
-  const checkActiveConvo = () => activeConversation !== "" &&
-  activeConversation === conversation?.otherUser.username
+  const checkActiveConvo = () =>
+    activeConversation !== "" &&
+    activeConversation === conversation?.otherUser.username;
 
   useEffect(() => {
-    if (
-      checkActiveConvo() && checkRecipient()
-    ) {
+    if (checkActiveConvo() && checkRecipient()) {
       readMessages(user.id, conversation?.id, conversation?.otherUser.id);
     }
     //eslint-disable-next-line

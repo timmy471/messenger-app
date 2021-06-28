@@ -79,6 +79,7 @@ const sendMessage = (data, body) => {
     recipientId: body.recipientId,
     sender: data.sender,
     lastMessageOn: data.lastMessageOn,
+    unreadCount: data.unreadCount
   });
 };
 
@@ -92,7 +93,7 @@ export const postMessage = (body) => async (dispatch) => {
         addConversation(body.recipientId, data.message, data.lastMessageOn)
       );
     } else {
-      dispatch(setNewMessage(data.message, null, data.lastMessageOn));
+      dispatch(setNewMessage(data.message, null, data.lastMessageOn, data.unreadCount));
     }
     sendMessage(data, body);
   } catch (error) {
