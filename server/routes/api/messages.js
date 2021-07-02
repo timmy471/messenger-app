@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { Conversation, Message } = require("../../db/models");
 const onlineUsers = require("../../onlineUsers");
+const { getUnreadCount } = require("../../helpers");
 
 // expects {recipientId, text, conversationId } in body (conversationId will be null if no conversation exists yet)
 router.post("/", async (req, res, next) => {
@@ -23,12 +24,25 @@ router.post("/", async (req, res, next) => {
           senderId,
           text,
           conversationId,
-          recipientId
+          recipientId,
         });
-        
+
         conversation.lastMessageOn = newDate;
         await conversation.save();
-        return res.json({ lastMessageOn: newDate, message, sender });
+        const { user2Id, user1Id } = conversation;
+        const unreadCountOne = await getUnreadCount(conversationId, user2Id);
+        const unreadCountTwo = await getUnreadCount(conversationId, user1Id);
+        const unreadCount = [
+          { id: user2Id, unreadCount: unreadCountOne },
+          { id: user1Id, unreadCount: unreadCountTwo },
+        ];
+
+        return res.json({
+          lastMessageOn: newDate,
+          message,
+          sender,
+          unreadCount,
+        });
       } else {
         return res.sendStatus(404);
       }
@@ -56,7 +70,16 @@ router.post("/", async (req, res, next) => {
       recipientId,
       conversationId: conversation.id,
     });
-    res.json({ lastMessageOn: newDate, message, sender });
+
+    const { user2Id, user1Id, id } = conversation;
+    const unreadCountOne = await getUnreadCount(id, user2Id);
+    const unreadCountTwo = await getUnreadCount(id, user1Id);
+    const unreadCount = [
+      { id: user2Id, unreadCount: unreadCountOne },
+      { id: user1Id, unreadCount: unreadCountTwo },
+    ];
+
+    res.json({ lastMessageOn: newDate, message, sender, unreadCount });
   } catch (error) {
     next(error);
   }

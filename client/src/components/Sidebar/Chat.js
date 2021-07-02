@@ -30,6 +30,10 @@ const Chat = (props) => {
 
   const { photoUrl, username, online, id: senderId } = conversation.otherUser;
 
+  const unreadCount =
+    conversation.unreadCount?.find((unread) => unread.id === user.id)
+      .unreadCount || [];
+
   const handleClick = async () => {
     //do not dispatch if active conversation does not change
     if (activeConversation !== username) {
@@ -47,9 +51,9 @@ const Chat = (props) => {
         online={online}
         sidebar={true}
       />
-      <ChatContent conversation={props.conversation} />
-      {conversation.unreadCount > 0 && (
-        <UnreadMessageBadge unreadMessageCount={conversation.unreadCount} />
+      <ChatContent conversation={conversation} />
+      {unreadCount > 0 && activeConversation !== username && (
+        <UnreadMessageBadge unreadMessageCount={unreadCount} />
       )}
     </Box>
   );

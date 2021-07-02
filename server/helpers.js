@@ -42,13 +42,19 @@ const updateMessagesStatus = async (data) => {
       include: [{ model: Message, order: ["createdAt", "ASC"] }],
     });
 
+    const { user2Id, user1Id } = newConvo;
     const convoJSON = newConvo.toJSON();
 
-    const lastReadOne = await getLatestReadMessage(convoId, newConvo.user2Id);
-    const lastReadTwo = await getLatestReadMessage(convoId, newConvo.user1Id);
+    const lastReadOne = await getLatestReadMessage(convoId, user2Id);
+    const lastReadTwo = await getLatestReadMessage(convoId, user1Id);
     convoJSON.latestMessageText = getLatestMessageText(convoJSON);
     convoJSON.lastReadMessages = [lastReadOne, lastReadTwo];
-    convoJSON.unreadCount = await getUnreadCount(convoId, userId);
+    const unreadCountOne = await getUnreadCount(convoId, user2Id);
+    const unreadCountTwo = await getUnreadCount(convoId, user1Id);
+    convoJSON.unreadCount = [
+      { id: user2Id, unreadCount: unreadCountOne },
+      { id: user1Id, unreadCount: unreadCountTwo },
+    ];
 
     return convoJSON;
   } catch (err) {
